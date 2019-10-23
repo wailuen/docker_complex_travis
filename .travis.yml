@@ -17,4 +17,7 @@ after_success:
 
   - echo "$DOCKER_PASSSOWRD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take images and push to docker hub
-  - docker push wailuen/multi-client wailuen/multi-nginx wailuen/multi-server wailuen/multi-worker
+  - docker push wailuen/multi-client
+  - docker push wailuen/multi-nginx
+  - docker push wailuen/multi-server
+  - docker push wailuen/multi-worker
