@@ -1,0 +1,19 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t wailuen/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true wailuen/react-test npm test
+
+after_success:
+  - docker build -t wailuen/multi-client ./client
+  - docker build -t wailuen/multi-nginx ./nginx
+  - docker build -t wailuen/multi-server ./server
+  - docker build -t wailuen/multi-worker ./worker
+  # Login to Dockerhub from CLI
+  - echo "$DOCKER_PASSSOWRD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take images and push to docker hub
+  - docker push wailuen/multi-client ailuen/multi-nginx wailuen/multi-server wailuen/multi-worker
